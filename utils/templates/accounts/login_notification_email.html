@@ -1,0 +1,70 @@
+<!-- This is a template for the login notification email. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Your CSS styles go here */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #007bff; /* Blue color */
+        }
+
+        .message {
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <img src="https://cdn.dribbble.com/users/31864/screenshots/3666062/free_logos_dribbble_ph.jpg" alt="Company Logo" width="100">
+            <h1>HairSol Uk</h1>
+        </div>
+        <h3>Hello {{ user_first_name}},</h3>
+        <p>Your account was accessed from a different location:</p>
+        <p><strong>Location:</strong> {{ user_new_location }}</p>
+        <p><strong>Ip Address:</strong> {{ user_new_ip_address }}</p>
+        <p><strong>Device:</strong> {{ user_new_device }}</p>
+        <p><strong>When:</strong> {{ formatted_time }}</p>
+        <p>If this was you, you can ignore this email.</p>
+        <p>If this wasn't you, please change your password immediately by clicking the link below:</p>
+        <a href="{{ change_password_link }}">Change Password</a>
+
+        <!-- Additional elements -->
+        <div class="message">
+            <p>For enhanced security:</p>
+            <ul>
+                <li>Use a strong and unique password.</li>
+                <li>Enable two-factor authentication .</li>
+                <li>Regularly review your account activity.</li>
+            </ul>
+        </div>
+
+        <!-- Closing message -->
+        <p>Yours Sincerely,<br>HairSol</p>
+    </div>
+</body>
+</html>

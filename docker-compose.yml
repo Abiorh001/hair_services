@@ -1,0 +1,127 @@
+version: '3.9'
+services:
+  # hairsol postgresql db
+  hairsol_db:
+    container_name: hairsol_db
+    image: postgres:15.3-bullseye
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_HOST
+    ports:
+      - "${SERVER_POSTGRES_PORT}:${POSTGRES_PORT}"
+    volumes:
+      - hairsol_db_data:/var/lib/postgresql/data
+    command: postgres -c max_connections=300
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -q -h localhost -p 5432 -U abiorh -d hairsoldb"]
+      interval: 60s
+      timeout: 30s
+      retries: 3
+    labels:
+      - "com.docker.compose.services.hairsol_db.healthcheck.status=/health"
+    
+      
+  # hairsol django server
+  hairsol:
+    container_name: hairsol_server
+    build: .
+    env_file:
+      - .env
+    environment:
+      - SECRET_KEY
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_HOST
+      - POSTGRES_PORT
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_STORAGE_BUCKET_NAME
+      - AWS_S3_BUCKET_REGION_NAME
+      - EMAIL_HOST
+      - EMAIL_PORT
+      - EMAIL_HOST_USER
+      - EMAIL_HOST_PASSWORD
+      - CELERY_BROKER_URL
+      - IPSTACK_API_KEY
+      - CUSTOM_GOOGLE_APPLICATION_CREDENTIALS
+      - BRAINTREE_MERCHANT_ID
+      - BRAINTREE_PUBLIC_KEY
+      - BRAINTREE_PRIVATE_KEY
+    ports:
+      - "${HAIRSOL_SERVER_PORT}:${HAIRSOL_SERVER_PORT}"
+    volumes:
+      - .:/hairsol_backend
+    command: /hairsol_backend/docker_scripts/django_application_server/docker-entrypoint.sh
+    depends_on:
+      - hairsol_db
+    restart: always
+      
+  # hairsol redis server
+  hairsol_redis:
+    container_name: hairsol_redis
+    image: redis:7.2.3-alpine
+    ports:
+      - "${SERVER_REDIS_PORT}:${REDIS_PORT}"
+    volumes:
+      - hairsol_redis_data:/data
+    command: redis-server --appendonly yes
+    restart: always
+  
+  # hairsol celery worker
+  hairsol_celery_worker:
+    container_name: hairsol_celery_worker
+    build: .
+    env_file:
+      - .env
+    environment:
+      - SECRET_KEY
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_HOST
+      - POSTGRES_PORT
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_STORAGE_BUCKET_NAME
+      - AWS_S3_BUCKET_REGION_NAME
+      - EMAIL_HOST
+      - EMAIL_PORT
+      - EMAIL_HOST_USER
+      - EMAIL_HOST_PASSWORD
+      - CELERY_BROKER_URL
+      - IPSTACK_API_KEY
+      - CUSTOM_GOOGLE_APPLICATION_CREDENTIALS
+      - BRAINTREE_MERCHANT_ID
+      - BRAINTREE_PUBLIC_KEY
+      - BRAINTREE_PRIVATE_KEY
+    volumes:
+      - .:/hairsol_backend
+    command: celery -A hairsol worker -l info
+    depends_on:
+      - hairsol_redis
+      - hairsol
+    restart: always
+  
+  # hairsol nginx web server
+  hairsol_nginx:
+    container_name: hairsol_nginx_web_server
+    build: .
+    command: /hairsol_backend/docker_scripts/nginx_web_server/docker-entrypoint.sh
+    ports:
+      - "${SERVER_NGINX_PORT}:${NGINX_PORT}"
+      - "${SERVER_NGINX_SSL_PORT}:${NGINX_SSL_PORT}"
+    depends_on:
+      - hairsol
+    restart: always
+    
+
+# volumes
+volumes:
+  hairsol_db_data
+  hairsol_redis_data
