@@ -1,8 +1,8 @@
 version: '3.9'
 services:
-  # hairsol postgresql db
-  hairsol_db:
-    container_name: hairsol_db
+  # hair_services postgresql db
+  hair_services_db:
+    container_name: hair_services_db
     image: postgres:15.3-bullseye
     env_file:
       - .env
@@ -18,17 +18,17 @@ services:
     command: postgres -c max_connections=300
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -q -h localhost -p 5432 -U abiorh -d hairsoldb"]
+      test: ["CMD-SHELL", "pg_isready -q -h localhost -p 5432 -U abiorh -d hair_services_db"]
       interval: 60s
       timeout: 30s
       retries: 3
     labels:
-      - "com.docker.compose.services.hairsol_db.healthcheck.status=/health"
+      - "com.docker.compose.services.hair_services_db.healthcheck.status=/health"
     
       
-  # hairsol django server
-  hairsol:
-    container_name: hairsol_server
+  # hair_services django server
+  hair_services:
+    container_name: hair_services_server
     build: .
     env_file:
       - .env
@@ -54,28 +54,28 @@ services:
       - BRAINTREE_PUBLIC_KEY
       - BRAINTREE_PRIVATE_KEY
     ports:
-      - "${HAIRSOL_SERVER_PORT}:${HAIRSOL_SERVER_PORT}"
+      - "${HAIRSERVICES_SERVER_PORT}:${HAIRSERVICES_SERVER_PORT}"
     volumes:
-      - .:/hairsol_backend
-    command: /hairsol_backend/docker_scripts/django_application_server/docker-entrypoint.sh
+      - .:/hair_services_backend
+    command: /hair_services_backend/docker_scripts/django_application_server/docker-entrypoint.sh
     depends_on:
-      - hairsol_db
+      - hair_services_db
     restart: always
       
-  # hairsol redis server
-  hairsol_redis:
-    container_name: hairsol_redis
+  # hair_services redis server
+  hair_services_redis:
+    container_name: hair_services_redis
     image: redis:7.2.3-alpine
     ports:
       - "${SERVER_REDIS_PORT}:${REDIS_PORT}"
     volumes:
-      - hairsol_redis_data:/data
+      - hair_services_redis_data:/data
     command: redis-server --appendonly yes
     restart: always
   
-  # hairsol celery worker
-  hairsol_celery_worker:
-    container_name: hairsol_celery_worker
+  # hair_services celery worker
+  hair_services_celery_worker:
+    container_name: hair_services_celery_worker
     build: .
     env_file:
       - .env
@@ -101,27 +101,27 @@ services:
       - BRAINTREE_PUBLIC_KEY
       - BRAINTREE_PRIVATE_KEY
     volumes:
-      - .:/hairsol_backend
-    command: celery -A hairsol worker -l info
+      - .:/hair_services_backend
+    command: celery -A hair_services worker -l info
     depends_on:
-      - hairsol_redis
-      - hairsol
+      - hair_services_redis
+      - hair_services
     restart: always
   
-  # hairsol nginx web server
-  hairsol_nginx:
-    container_name: hairsol_nginx_web_server
+  # hair_services nginx web server
+  hair_services_nginx:
+    container_name: hair_services_nginx_web_server
     build: .
-    command: /hairsol_backend/docker_scripts/nginx_web_server/docker-entrypoint.sh
+    command: /hair_services_backend/docker_scripts/nginx_web_server/docker-entrypoint.sh
     ports:
       - "${SERVER_NGINX_PORT}:${NGINX_PORT}"
       - "${SERVER_NGINX_SSL_PORT}:${NGINX_SSL_PORT}"
     depends_on:
-      - hairsol
+      - hair_services
     restart: always
     
 
 # volumes
 volumes:
-  hairsol_db_data
-  hairsol_redis_data
+  hair_services_db_data
+  hair_services_redis_data

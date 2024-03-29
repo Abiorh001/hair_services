@@ -7,12 +7,12 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="HairSol API",
+        title="Hair Service API",
         default_version='v1',
-        description="HairSol API Documentation",
-        terms_of_service="https://www.hairsol.com/terms/",
-        contact=openapi.Contact(email="support@hairsol.com"),
-        license=openapi.License(name="HairSol License"),
+        description="Hair Services API Documentation",
+        terms_of_service="https://example.com/terms/",
+        contact=openapi.Contact(email="support@example.com"),
+        license=openapi.License(name="Hair Services License"),
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),

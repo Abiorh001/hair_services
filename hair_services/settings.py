@@ -67,7 +67,7 @@ MIDDLEWARE = [
 ]
 
 
-ROOT_URLCONF = 'hairsol.urls'
+ROOT_URLCONF = 'hair_services.urls'
 
 TEMPLATES = [
     {
@@ -85,7 +85,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'hairsol.wsgi.application'
+WSGI_APPLICATION = 'hair_services.wsgi.application'
 
 
 # Database
@@ -236,13 +236,13 @@ SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 
 JAZZMIN_SETTINGS = {
-        "site_title": "HairSol Admin",
-        "site_header": "HairSol Admin Panel",
-        "site_brand": "HairSol",
+        "site_title": "Hair Services Admin",
+        "site_header": "Hair Services Admin Panel",
+        "site_brand": "Hair Services",
         "login_logo": None,
         "login_logo_dark": None,
-        "copyright": "Hairsol uk",
-        "welcome_sign": "Welcome to Hairsol Admin Page managed by @Abiorh",
+        "copyright": "Hair Services",
+        "welcome_sign": "Welcome to Hair Services Admin Page managed by @Abiorh",
 }
 JAZZMIN_UI_TWEAKS = {
         "theme": "darkly"
@@ -291,7 +291,7 @@ FCM_DJANGO_SETTINGS = {
      # default: None (the default Firebase app)
     "DEFAULT_FIREBASE_APP": FIREBASE_MESSAGING_APP,
      # default: _('FCM Django')
-    "APP_VERBOSE_NAME": "Hairsol",
+    "APP_VERBOSE_NAME": "Hair Services",
      # true if you want to have only one active device per registered user at a time
      # default: False
     "ONE_DEVICE_PER_USER": False,

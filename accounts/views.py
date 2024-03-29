@@ -18,7 +18,7 @@ import requests
 from datetime import datetime
 from decouple import config
 import os
-from hairsol.settings import BASE_DIR
+from hair_services.settings import BASE_DIR
 from fcm_django.models import FCMDevice
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone

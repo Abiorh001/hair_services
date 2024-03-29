@@ -3,10 +3,10 @@ FROM python:3.11.6-slim-bullseye
 
 
 # Create working directory
-WORKDIR /hairsol_backend
+WORKDIR /hair_services_backend
 
 # Copy local files to the container
-COPY . /hairsol_backend
+COPY . /hair_services_backend
 
 # Install Python dependencies from requirements.txt if it exists
 RUN apt-get update && \

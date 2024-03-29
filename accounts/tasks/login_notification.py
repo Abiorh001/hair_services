@@ -10,7 +10,7 @@ def send_login_notification_email(email, html_content):
     user_email_func = EmailMultiAlternatives(
         subject="Login from a Different Location",
         body=strip_tags(html_content),  # Use the text version of the HTML content
-        from_email="hairsolproject@gmail.com",
+        from_email="hairservices@gmail.com",
         to=[email],
     )
 

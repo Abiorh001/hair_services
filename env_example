@@ -1,0 +1,52 @@
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY=""
+
+# database
+POSTGRES_DB=""
+POSTGRES_USER=""
+POSTGRES_PASSWORD=""
+POSTGRES_HOST=""
+POSTGRES_PORT=""
+
+
+# aws credentials
+AWS_ACCESS_KEY_ID=""
+AWS_SECRET_ACCESS_KEY=""
+AWS_STORAGE_BUCKET_NAME=""
+AWS_S3_BUCKET_REGION_NAME=""
+
+# email credentials
+EMAIL_HOST=""
+EMAIL_PORT=""
+EMAIL_HOST_USER=""
+EMAIL_HOST_PASSWORD=""
+
+# celery broker url
+CELERY_BROKER_URL=""
+
+
+# ipstack api key
+IPSTACK_API_KEY=""
+
+
+
+
+
+
+
+
+# redis docker port
+REDIS_PORT=""
+SERVER_REDIS_PORT=""
+
+# celery docker broker url
+# CELERY_BROKER_URL=""
+
+# hair_services docker server port
+HAIRSERVICES_SERVER_PORT=8000
+
+#nginx docker port and ssl
+SERVER_NGINX_PORT=""
+NGINX_PORT=""
+SERVER_NGINX_SSL_PORT=""
+NGINX_SSL_PORT=""

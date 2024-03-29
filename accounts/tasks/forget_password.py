@@ -6,6 +6,6 @@ from django.core.mail import send_mail
 def send_forget_password_email(email, reset_token):
     subject = "Reset your password"
     message = f"Your reset password token is {reset_token}"
-    from_email = "hairsolproject@gmail.com"
+    from_email = "hairservices@gmail.com"
     recipient = [email]
     send_mail(subject, message, from_email, recipient)
